@@ -9,50 +9,50 @@ using TheDeltaSoccerManager.Models;
 
 namespace TheDeltaSoccerManager.Controllers
 {
-    [Route("api/[Players]")]
+    [Route("api/[Clubs]")]
     [ApiController]
-    public class PlayersController : ControllerBase
+    public class ClubsController : ControllerBase
     {
         private readonly SoccerManagerContext _context;
 
-        public PlayersController(SoccerManagerContext context)
+        public ClubsController(SoccerManagerContext context)
         {
             _context = context;
         }
 
-        // GET: api/Players
+        // GET: api/Clubs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
+        public async Task<ActionResult<IEnumerable<Club>>> GetClub()
         {
-            return await _context.Players.ToListAsync();
+            return await _context.Club.ToListAsync();
         }
 
-        // GET: api/Players/5
+        // GET: api/Clubs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Player>> GetPlayer(long id)
+        public async Task<ActionResult<Club>> GetClub(long id)
         {
-            var Player = await _context.Players.FindAsync(id);
+            var club = await _context.Club.FindAsync(id);
 
-            if (Player == null)
+            if (club == null)
             {
                 return NotFound();
             }
 
-            return Player;
+            return club;
         }
 
-        // PUT: api/Players/5
+        // PUT: api/Clubs/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlayer(long id, Player Player)
+        public async Task<IActionResult> PutClub(long id, Club club)
         {
-            if (id != Player.PlayerId)
+            if (id != club.ClubId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(Player).State = EntityState.Modified;
+            _context.Entry(club).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace TheDeltaSoccerManager.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PlayerExists(id))
+                if (!ClubExists(id))
                 {
                     return NotFound();
                 }
@@ -73,37 +73,37 @@ namespace TheDeltaSoccerManager.Controllers
             return NoContent();
         }
 
-        // POST: api/Players
+        // POST: api/Clubs
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Player>> PostPlayer(Player Player)
+        public async Task<ActionResult<Club>> PostClub(Club club)
         {
-            _context.Players.Add(Player);
+            _context.Club.Add(club);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetPlayer), new { id = Player.PlayerId }, Player);
+            return CreatedAtAction("GetClub", new { id = club.ClubId }, club);
         }
 
-        // DELETE: api/Players/5
+        // DELETE: api/Clubs/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Player>> DeletePlayer(long id)
+        public async Task<ActionResult<Club>> DeleteClub(long id)
         {
-            var Player = await _context.Players.FindAsync(id);
-            if (Player == null)
+            var club = await _context.Club.FindAsync(id);
+            if (club == null)
             {
                 return NotFound();
             }
 
-            _context.Players.Remove(Player);
+            _context.Club.Remove(club);
             await _context.SaveChangesAsync();
 
-            return Player;
+            return club;
         }
 
-        private bool PlayerExists(long id)
+        private bool ClubExists(long id)
         {
-            return _context.Players.Any(e => e.PlayerId == id);
+            return _context.Club.Any(e => e.ClubId == id);
         }
     }
 }

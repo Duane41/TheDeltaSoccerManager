@@ -11,5 +11,8 @@ namespace TheDeltaSoccerManager.Models
         public string Name { get; set; }
 
         public ICollection<Player> Player { get; set; }
+
+        public int StadiumId { get; set; }
+        public Stadium Stadium { get; set; }
     }
 }

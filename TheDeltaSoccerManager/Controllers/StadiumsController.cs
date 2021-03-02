@@ -9,50 +9,50 @@ using TheDeltaSoccerManager.Models;
 
 namespace TheDeltaSoccerManager.Controllers
 {
-    [Route("api/[Players]")]
+    [Route("api/[Stadiums]")]
     [ApiController]
-    public class PlayersController : ControllerBase
+    public class StadiumsController : ControllerBase
     {
         private readonly SoccerManagerContext _context;
 
-        public PlayersController(SoccerManagerContext context)
+        public StadiumsController(SoccerManagerContext context)
         {
             _context = context;
         }
 
-        // GET: api/Players
+        // GET: api/Stadium
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
+        public async Task<ActionResult<IEnumerable<Stadium>>> GetStadium()
         {
-            return await _context.Players.ToListAsync();
+            return await _context.Stadium.ToListAsync();
         }
 
-        // GET: api/Players/5
+        // GET: api/Stadium/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Player>> GetPlayer(long id)
+        public async Task<ActionResult<Stadium>> GetStadium(int id)
         {
-            var Player = await _context.Players.FindAsync(id);
+            var stadium = await _context.Stadium.FindAsync(id);
 
-            if (Player == null)
+            if (stadium == null)
             {
                 return NotFound();
             }
 
-            return Player;
+            return stadium;
         }
 
-        // PUT: api/Players/5
+        // PUT: api/Stadium/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlayer(long id, Player Player)
+        public async Task<IActionResult> PutStadium(int id, Stadium stadium)
         {
-            if (id != Player.PlayerId)
+            if (id != stadium.StadiumId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(Player).State = EntityState.Modified;
+            _context.Entry(stadium).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace TheDeltaSoccerManager.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PlayerExists(id))
+                if (!StadiumExists(id))
                 {
                     return NotFound();
                 }
@@ -73,37 +73,37 @@ namespace TheDeltaSoccerManager.Controllers
             return NoContent();
         }
 
-        // POST: api/Players
+        // POST: api/Stadium
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Player>> PostPlayer(Player Player)
+        public async Task<ActionResult<Stadium>> PostStadium(Stadium stadium)
         {
-            _context.Players.Add(Player);
+            _context.Stadium.Add(stadium);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetPlayer), new { id = Player.PlayerId }, Player);
+            return CreatedAtAction("GetStadium", new { id = stadium.StadiumId }, stadium);
         }
 
-        // DELETE: api/Players/5
+        // DELETE: api/Stadium/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Player>> DeletePlayer(long id)
+        public async Task<ActionResult<Stadium>> DeleteStadium(int id)
         {
-            var Player = await _context.Players.FindAsync(id);
-            if (Player == null)
+            var stadium = await _context.Stadium.FindAsync(id);
+            if (stadium == null)
             {
                 return NotFound();
             }
 
-            _context.Players.Remove(Player);
+            _context.Stadium.Remove(stadium);
             await _context.SaveChangesAsync();
 
-            return Player;
+            return stadium;
         }
 
-        private bool PlayerExists(long id)
+        private bool StadiumExists(int id)
         {
-            return _context.Players.Any(e => e.PlayerId == id);
+            return _context.Stadium.Any(e => e.StadiumId == id);
         }
     }
 }

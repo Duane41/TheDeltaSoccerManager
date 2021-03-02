@@ -9,7 +9,7 @@ using TheDeltaSoccerManager.Models;
 
 namespace TheDeltaSoccerManager.Controllers
 {
-    [Route("api/[Stadiums]")]
+    [Route("api/Stadiums")]
     [ApiController]
     public class StadiumsController : ControllerBase
     {

@@ -29,7 +29,7 @@ namespace TheDeltaSoccerManager.Controllers
 
         // GET: api/Players/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Player>> GetPlayer(long id)
+        public async Task<ActionResult<Player>> GetPlayer(int id)
         {
             var Player = await _context.Players.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace TheDeltaSoccerManager.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlayer(long id, Player Player)
+        public async Task<IActionResult> PutPlayer(int id, Player Player)
         {
             if (id != Player.PlayerId)
             {
@@ -87,7 +87,7 @@ namespace TheDeltaSoccerManager.Controllers
 
         // DELETE: api/Players/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Player>> DeletePlayer(long id)
+        public async Task<ActionResult<Player>> DeletePlayer(int id)
         {
             var Player = await _context.Players.FindAsync(id);
             if (Player == null)
@@ -101,7 +101,9 @@ namespace TheDeltaSoccerManager.Controllers
             return Player;
         }
 
-        private bool PlayerExists(long id)
+        
+
+        private bool PlayerExists(int id)
         {
             return _context.Players.Any(e => e.PlayerId == id);
         }

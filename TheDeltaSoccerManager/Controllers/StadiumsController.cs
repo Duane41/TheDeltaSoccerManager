@@ -101,6 +101,42 @@ namespace TheDeltaSoccerManager.Controllers
             return stadium;
         }
 
+        public class PresentationAddToStadiumResponse
+        {
+            public bool success { get; set; }
+
+            public string message { get; set; }
+        }
+        [HttpPost("{id}/{club_id}")]
+        public async Task<ActionResult<Club>> AddClubToStadium(int id, int club_id)
+        {
+            Stadium new_stadium = _context.Stadium.Find(id);
+            Club club = _context.Club.Find(club_id);
+            if (club == null || new_stadium == null)
+            {
+                return NotFound();
+            }
+
+            if (club.Stadium != null && club.Stadium.StadiumId == new_stadium.StadiumId)
+            {
+                return Ok(new PresentationAddToStadiumResponse()
+                {
+                    success = false,
+                    message = String.Format("{0} already has {1} set as their home stadium", club.Name, new_stadium.Name)
+                });
+            }
+
+            club.Stadium = new_stadium;
+
+            _context.Entry(club).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok(new PresentationAddToStadiumResponse()
+            {
+                success = true,
+                message = String.Format("{0} has been assigned to {1}. Welcome to your new home!", club.Name, new_stadium.Name)
+            });
+        }
         private bool StadiumExists(int id)
         {
             return _context.Stadium.Any(e => e.StadiumId == id);

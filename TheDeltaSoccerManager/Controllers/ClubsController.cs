@@ -26,10 +26,10 @@ namespace TheDeltaSoccerManager.Controllers
         {
             return await _context.Club.ToListAsync();
         }
-
+        
         // GET: api/Clubs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Club>> GetClub(long id)
+        public async Task<ActionResult<Club>> GetClub(int id)
         {
             var club = await _context.Club.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace TheDeltaSoccerManager.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutClub(long id, Club club)
+        public async Task<IActionResult> PutClub(int id, Club club)
         {
             if (id != club.ClubId)
             {
@@ -87,7 +87,7 @@ namespace TheDeltaSoccerManager.Controllers
 
         // DELETE: api/Clubs/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Club>> DeleteClub(long id)
+        public async Task<ActionResult<Club>> DeleteClub(int id)
         {
             var club = await _context.Club.FindAsync(id);
             if (club == null)
@@ -101,7 +101,43 @@ namespace TheDeltaSoccerManager.Controllers
             return club;
         }
 
-        private bool ClubExists(long id)
+        public class PresentationAddToCLubResponse
+        {
+            public bool success { get; set; }
+
+            public string message { get; set; }
+        }
+        [HttpPost("{id}/{player_id}")]
+        public async Task<ActionResult<Club>> AddPlayerToClub(int id,  int player_id)
+        {
+            Club new_club = _context.Club.Find(id);
+            Player player = _context.Players.Find(player_id);
+            if (new_club == null || player == null)
+            {
+                return NotFound();
+            }
+
+            if (player.Club.ClubId == new_club.ClubId)
+            {
+                return Ok(new PresentationAddToCLubResponse()
+                {
+                    success = false,
+                    message = String.Format("Player {0} has already been transferred to {1}", player.Name, new_club.Name)
+                });
+            }
+
+            player.Club = new_club;
+            _context.Entry(player).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok(new PresentationAddToCLubResponse()
+            {
+                success = true,
+                message = String.Format("Player {0} has been transferred to {1}", player.Name, new_club.Name)
+            });
+        }
+
+        private bool ClubExists(int id)
         {
             return _context.Club.Any(e => e.ClubId == id);
         }

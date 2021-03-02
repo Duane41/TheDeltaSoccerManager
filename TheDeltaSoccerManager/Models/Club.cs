@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace TheDeltaSoccerManager.Models
 {
-    public class TodoItem
+    public class Club
     {
-        public long Id { get; set; }
+        public long ClubId { get; set; }
         public string Name { get; set; }
-        public bool IsComplete { get; set; }
+
+        public ICollection<Player> Player { get; set; }
     }
 }

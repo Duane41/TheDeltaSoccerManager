@@ -12,6 +12,6 @@ namespace TheDeltaSoccerManager.Models
         {
         }
 
-        public DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<Player> Players { get; set; }
     }
 }

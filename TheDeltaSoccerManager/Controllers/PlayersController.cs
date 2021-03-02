@@ -9,50 +9,50 @@ using TheDeltaSoccerManager.Models;
 
 namespace TheDeltaSoccerManager.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[Players]")]
     [ApiController]
-    public class TodoItemsController : ControllerBase
+    public class PlayersController : ControllerBase
     {
         private readonly SoccerManagerContext _context;
 
-        public TodoItemsController(SoccerManagerContext context)
+        public PlayersController(SoccerManagerContext context)
         {
             _context = context;
         }
 
-        // GET: api/TodoItems
+        // GET: api/Players
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
+        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
         {
-            return await _context.TodoItems.ToListAsync();
+            return await _context.Players.ToListAsync();
         }
 
-        // GET: api/TodoItems/5
+        // GET: api/Players/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
+        public async Task<ActionResult<Player>> GetPlayer(long id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var Player = await _context.Players.FindAsync(id);
 
-            if (todoItem == null)
+            if (Player == null)
             {
                 return NotFound();
             }
 
-            return todoItem;
+            return Player;
         }
 
-        // PUT: api/TodoItems/5
+        // PUT: api/Players/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(long id, TodoItem todoItem)
+        public async Task<IActionResult> PutPlayer(long id, Player Player)
         {
-            if (id != todoItem.Id)
+            if (id != Player.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(todoItem).State = EntityState.Modified;
+            _context.Entry(Player).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace TheDeltaSoccerManager.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TodoItemExists(id))
+                if (!PlayerExists(id))
                 {
                     return NotFound();
                 }
@@ -73,37 +73,37 @@ namespace TheDeltaSoccerManager.Controllers
             return NoContent();
         }
 
-        // POST: api/TodoItems
+        // POST: api/Players
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
+        public async Task<ActionResult<Player>> PostPlayer(Player Player)
         {
-            _context.TodoItems.Add(todoItem);
+            _context.Players.Add(Player);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
+            return CreatedAtAction(nameof(GetPlayer), new { id = Player.Id }, Player);
         }
 
-        // DELETE: api/TodoItems/5
+        // DELETE: api/Players/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<TodoItem>> DeleteTodoItem(long id)
+        public async Task<ActionResult<Player>> DeletePlayer(long id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
-            if (todoItem == null)
+            var Player = await _context.Players.FindAsync(id);
+            if (Player == null)
             {
                 return NotFound();
             }
 
-            _context.TodoItems.Remove(todoItem);
+            _context.Players.Remove(Player);
             await _context.SaveChangesAsync();
 
-            return todoItem;
+            return Player;
         }
 
-        private bool TodoItemExists(long id)
+        private bool PlayerExists(long id)
         {
-            return _context.TodoItems.Any(e => e.Id == id);
+            return _context.Players.Any(e => e.Id == id);
         }
     }
 }

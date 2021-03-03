@@ -117,7 +117,7 @@ namespace TheDeltaSoccerManager.Controllers
                 return NotFound();
             }
 
-            if (player.Club.ClubId == new_club.ClubId)
+            if (player.Club != null && player.Club.ClubId == new_club.ClubId)
             {
                 return Ok(new PresentationAddToCLubResponse()
                 {

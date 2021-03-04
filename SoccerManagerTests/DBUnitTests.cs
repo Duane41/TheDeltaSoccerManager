@@ -6,7 +6,7 @@ using Xunit;
 
 namespace SoccerManagerTests
 {
-    public class UnitTest1
+    public class DBUnitTests
     {
         [Fact]
         public async void AddPlayerSucces()
